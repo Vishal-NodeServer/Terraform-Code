@@ -3,17 +3,61 @@ provider "aws" {
 }
 
 module "aws_instance" {
-  source = "./modules/aws_instance"
-
-  for_each      = tomap({ 0 = "0", 1 = "1", 2 = "2" }) // Convert indices to string keys and and its run the three times means 3 (instance) itration
+  source        = "./modules/aws_instance"
   ami           = var.ami
   instance_type = var.instance_type
-  counts        = 1                           #per itration create 1 instance and after 2 itration it create 1 more instance  and ....               # Single instance per iteration
-  volume_size   = var.volume_size[each.value] # Pass size based on index // 0, 1, 2
+  count         = var.counts
+  volume_size   = var.volume_size[count.index]
   volume_type   = var.volume_type
-
   tags = {
-    Environment = "dev"
-    Owner       = "Vishal"
+    Name = "instance-${count.index}"
   }
 }
+#   Count example with local and index , --> good job vishal
+
+# locals {
+#   project = "terraform-practice"
+# 
+# }
+# 
+# resource "aws_vpc" "main" {
+#   cidr_block = "10.0.0.0/16"
+#   tags = {
+#     Name = "vpc-${local.project}"
+#   }
+# }
+# locals {
+#   project = "terraform-practice"
+# 
+# }
+# 
+# resource "aws_vpc" "main" {
+#   cidr_block = "10.0.0.0/16"
+#   tags = {
+#     Name = "vpc-${local.project}"
+#   }
+# }
+# 
+# 
+# 
+# resource "aws_subnet" "name" {
+#   vpc_id     = aws_vpc.main.id
+#   cidr_block = "10.0.${count.index}.0/24"
+#   count      = 3
+#   tags = {
+#     Name = "${local.project}-subnet-${count.index}"
+#   }
+# 
+# }
+# 
+# 
+# 
+# resource "aws_subnet" "name" {
+#   vpc_id     = aws_vpc.main.id
+#   cidr_block = "10.0.${count.index}.0/24"
+#   count      = 3
+#   tags = {
+#     Name = "${local.project}-subnet-${count.index}"
+#   }
+# 
+# }

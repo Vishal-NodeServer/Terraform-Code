@@ -18,13 +18,13 @@ variable "volume_type" {
   default = "gp3"
 }
 
-variable "counts" {
-  type    = list(number)
-  default = [1, 2, 3]
-}
-
 variable "tags" {
   description = "Additional tags for EC2 instances"
   type        = map(string)
   default     = {}
+}
+
+variable "counts" {
+  type    = number
+  default = 3
 }
