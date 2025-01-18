@@ -1,33 +1,35 @@
-# Remove provider block as it should be in root module
 variable "instance_type" {
-  description = "value"
+  description = "The instance type for the EC2 instance"
 }
 
 variable "ami" {
-  description = "value"
+  description = "The AMI ID for the EC2 instance"
 }
 
 variable "tags" {
-  description = "value"
+  description = "Tags for the EC2 instance"
+  type        = map(string)
 }
 
 variable "counts" {
-  description = "value"
+  description = "Number of instances to create"
+  type        = number
 }
 
 variable "volume_size" {
-  description = "value"
-
+  description = "List of volume sizes for instances"
+  type        = number
 }
 
 variable "volume_type" {
-  description = "value"
+  description = "Volume type for the block devices"
+  type        = string
 }
 
 resource "aws_instance" "example" {
+  count         = var.counts
   ami           = var.ami
   instance_type = var.instance_type
-  count         = var.counts
 
   ebs_block_device {
     device_name = "/dev/sdb"
@@ -42,4 +44,3 @@ resource "aws_instance" "example" {
     }
   )
 }
-
