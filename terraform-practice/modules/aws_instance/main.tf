@@ -1,48 +1,45 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
+# Remove provider block as it should be in root module
 variable "instance_type" {
-  type = string
+  description = "value"
 }
 
 variable "ami" {
-  type = string
+  description = "value"
 }
 
 variable "tags" {
-  type    = map(string)
-  default = {}
+  description = "value"
 }
 
 variable "counts" {
-  type = list(number)
+  description = "value"
 }
 
-
 variable "volume_size" {
-  type = number
+  description = "value"
+
 }
 
 variable "volume_type" {
-  type = string
+  description = "value"
 }
 
 resource "aws_instance" "example" {
   ami           = var.ami
   instance_type = var.instance_type
-  count         = length(var.counts)
+  count         = var.counts
+
   ebs_block_device {
     device_name = "/dev/sdb"
-    volume_size = var.volume_size[count.index]
+    volume_size = var.volume_size
     volume_type = var.volume_type
+  }
 
-  }
-  tags = {
-    Name = "example-${count.index}"
-  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "example-${count.index}"
+    }
+  )
 }
 
-output "instance_id" {
-  value = aws_instance.example.id
-}

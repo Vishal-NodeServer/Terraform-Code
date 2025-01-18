@@ -1,8 +1,4 @@
-variable "counts" {
-  description = "Number of instances to create"
-  type        = number
-  default     = 3
-}
+
 
 variable "ami" {
   type    = string
@@ -25,5 +21,13 @@ variable "volume_type" {
   default = "gp3"
 }
 
+variable "counts" {
+  type = list(number)
+  default = [1, 2, 3]
+}
 
 //hcl - hashicorp configuration language
+
+
+
+
