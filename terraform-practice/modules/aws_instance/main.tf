@@ -21,21 +21,22 @@ variable "volume_type" {
   type        = string
 }
 
-variable "counts" {
-  description = "Number of instances to create"
-  type        = number
+
+
+locals {
+  name = "example"
 }
 
 resource "aws_instance" "example" {
-  count         = var.counts
   ami           = var.ami
   instance_type = var.instance_type
 
   ebs_block_device {
     device_name = "/dev/sdb"
-    volume_size = var.volume_size[count.index]
+    volume_size = var.volume_size
     volume_type = var.volume_type
   }
-  tags = var.tags
-
+  tags = {
+    Name = local.name
+  }
 }

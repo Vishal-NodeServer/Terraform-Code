@@ -24,7 +24,3 @@ variable "tags" {
   default     = {}
 }
 
-variable "counts" {
-  type    = number
-  default = 3
-}
