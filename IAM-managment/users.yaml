@@ -1,0 +1,9 @@
+users:
+  - username: vishal
+    roles: [AmazonEC2FullAccess, AmazonS3ReadOnlyAccess]
+
+  - username: juan
+    roles: [AmazonS3ReadOnlyAccess]
+
+  - username: maria
+    roles: [AmazonS3ReadOnlyAccess]

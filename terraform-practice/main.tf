@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "ap-south-1"
 }
 
 locals {
@@ -52,3 +52,44 @@ module "aws_instance" {
 #     Name = "${local.project}-subnet-${count.index}"
 #   }
 # }
+
+
+variable "ec2_map" {
+  type = map(object({
+    ami           = string
+    instance_type = string
+  }))
+}
+
+locals {
+  ec2_map = {
+    "ubuntu" = {
+      ami           = "ami-0d2614eafc1b0e4d2"
+      instance_type = "t2.micro"
+    },
+    "centos" = {
+      ami           = "ami-0d2614eafc1b0e4d2"
+      instance_type = "t2.micro"
+    }
+  }
+}
+
+resource "aws_instance" "name" { // its create 2 instance because we have 2 key in local.ec2_map
+  for_each      = local.ec2_map
+  ami           = each.value.ami
+  instance_type = each.value.instance_type
+
+  subnet_id = element(aws_subnet.name.*.id, index(keys(local.ec2_map), each.key)) // its create 2 subnet because we have 2 key in local.ec2_map
+
+  tags = {
+    Name = "${local.project}-instance-${each.key}"
+  }
+}
+
+
+
+
+//database ---> collection ---> document ---> field ---> value
+
+//example : 
+
