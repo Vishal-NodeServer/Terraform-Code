@@ -4,18 +4,6 @@ region = ap-south-1
 
 ## Creating a VPC infrastructure using Terraform :
 
-```
-diagram.png
 
-
-
-
-```
-diagram.png
-
-
-Diagram.png
-
-
-
+![Alt text](Diagram.png)
 
